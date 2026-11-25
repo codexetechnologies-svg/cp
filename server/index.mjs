@@ -59,8 +59,11 @@ app.use(express.json({
 
 const PORT = Number(process.env.PORT || 4000);
 const WEB_DIR = join(__dirname, '..', 'public');
-const SUPABASE_URL = process.env.SUPABASE_URL?.replace(/\/+$/, '');
-const SUPABASE_API_KEY = process.env.SUPABASE_ANON_KEY || process.env.SUPABASE_PUBLISHABLE_KEY;
+// Supabase project URL and publishable key are public by design (they ship to
+// browsers in Supabase client apps), so they are safe fallbacks. Env vars
+// still take precedence for other environments.
+const SUPABASE_URL = (process.env.SUPABASE_URL || 'https://uijpwczjfbqobbgjthmb.supabase.co').replace(/\/+$/, '');
+const SUPABASE_API_KEY = process.env.SUPABASE_ANON_KEY || process.env.SUPABASE_PUBLISHABLE_KEY || 'sb_publishable_k0cKHDCN8cVAlmviXUmJmw_eOekY2B7';
 const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
 const hasUpstashConfig = Boolean(process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN);
 const CONTENT_SECURITY_POLICY = [
@@ -628,6 +631,16 @@ function requireSameOrigin(req, res, next) {
 }
 
 app.use('/api', apiRateLimit);
+app.use('/api', (req, res, next) => {
+  // Surface a clear configuration error instead of a generic 500 when the
+  // deployment is missing DATABASE_URL (e.g. env vars not yet added on Vercel).
+  if (!databaseUrl && req.path !== '/health') {
+    return res.status(503).json({
+      error: 'Database is not configured on this deployment. Set DATABASE_URL in the hosting environment and redeploy.'
+    });
+  }
+  next();
+});
 app.use('/api', (req, res, next) => {
   const previewRole = getPreviewRole(req);
   const readOnlyMethod = ['GET', 'HEAD', 'OPTIONS'].includes(req.method);
