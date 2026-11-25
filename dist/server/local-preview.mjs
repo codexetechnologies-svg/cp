@@ -1,4 +1,4 @@
-const PREVIEW_ROLES = new Set(['supplier', 'medical_shop']);
+const PREVIEW_ROLES = new Set(['admin', 'supplier', 'medical_shop']);
 const LOOPBACK_ADDRESSES = new Set(['127.0.0.1', '::1', '::ffff:127.0.0.1']);
 
 export function isLocalPreviewEnabled(environment = process.env) {

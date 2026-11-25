@@ -5,7 +5,7 @@ import { Redis } from '@upstash/redis';
 import { randomUUID } from 'node:crypto';
 import { existsSync, readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
-import { dirname, join, resolve } from 'node:path';
+import { dirname, join } from 'node:path';
 import {
   DeleteObjectCommand, GetObjectCommand, PutObjectCommand, S3Client
 } from '@aws-sdk/client-s3';
@@ -59,8 +59,11 @@ app.use(express.json({
 
 const PORT = Number(process.env.PORT || 4000);
 const WEB_DIR = join(__dirname, '..', 'public');
-const SUPABASE_URL = process.env.SUPABASE_URL?.replace(/\/+$/, '');
-const SUPABASE_API_KEY = process.env.SUPABASE_ANON_KEY || process.env.SUPABASE_PUBLISHABLE_KEY;
+// Supabase project URL and publishable key are public by design (they ship to
+// browsers in Supabase client apps), so they are safe fallbacks. Env vars
+// still take precedence for other environments.
+const SUPABASE_URL = (process.env.SUPABASE_URL || 'https://uijpwczjfbqobbgjthmb.supabase.co').replace(/\/+$/, '');
+const SUPABASE_API_KEY = process.env.SUPABASE_ANON_KEY || process.env.SUPABASE_PUBLISHABLE_KEY || 'sb_publishable_k0cKHDCN8cVAlmviXUmJmw_eOekY2B7';
 const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
 const hasUpstashConfig = Boolean(process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN);
 const CONTENT_SECURITY_POLICY = [
@@ -86,6 +89,10 @@ if (process.env.TRUST_PROXY_HOPS) {
     throw new Error('TRUST_PROXY_HOPS must be a positive integer.');
   }
   app.set('trust proxy', proxyHops);
+} else if (process.env.VERCEL === '1') {
+  // Vercel fronts functions with a proxy; trust one hop so req.ip is the
+  // real client IP and rate limiting keys per user, not per edge node.
+  app.set('trust proxy', 1);
 }
 
 app.use((_req, res, next) => {
@@ -121,6 +128,7 @@ function asyncRoute(fn) {
 
 const redis = hasUpstashConfig ? Redis.fromEnv() : null;
 const localRateBuckets = new Map();
+let warnedMissingRedis = false;
 
 function requestLimiter(name, maxRequests, windowSeconds) {
   const distributedLimiter = redis
@@ -141,8 +149,9 @@ function requestLimiter(name, maxRequests, windowSeconds) {
       if (distributedLimiter) {
         ({ success, remaining, reset } = await distributedLimiter.limit(key));
       } else {
-        if (process.env.NODE_ENV === 'production') {
-          return res.status(503).json({ error: 'Request protection is not configured.' });
+        if (process.env.NODE_ENV === 'production' && !warnedMissingRedis) {
+          warnedMissingRedis = true;
+          console.error('UPSTASH_REDIS_REST_URL/TOKEN not configured; rate limiting falls back to per-instance memory (weaker on serverless).');
         }
         const now = Date.now();
         const bucketKey = `${name}:${key}`;
@@ -557,8 +566,14 @@ function requireAccount(...roles) {
       req.account = {
         id: previewRole === 'supplier'
           ? '00000000-0000-4000-8000-000000000001'
-          : '00000000-0000-4000-8000-000000000002',
-        fullName: previewRole === 'supplier' ? 'Local Distributor Preview' : 'Local Retailer Preview',
+          : previewRole === 'medical_shop'
+            ? '00000000-0000-4000-8000-000000000002'
+            : '00000000-0000-4000-8000-000000000003',
+        fullName: previewRole === 'supplier'
+          ? 'Local Distributor Preview'
+          : previewRole === 'medical_shop'
+            ? 'Local Retailer Preview'
+            : 'Local Admin Preview',
         email: 'preview@localhost',
         role: previewRole,
         status: 'approved'
@@ -623,6 +638,16 @@ function requireSameOrigin(req, res, next) {
 
 app.use('/api', apiRateLimit);
 app.use('/api', (req, res, next) => {
+  // Surface a clear configuration error instead of a generic 500 when the
+  // deployment is missing DATABASE_URL (e.g. env vars not yet added on Vercel).
+  if (!databaseUrl && req.path !== '/health') {
+    return res.status(503).json({
+      error: 'Database is not configured on this deployment. Set DATABASE_URL in the hosting environment and redeploy.'
+    });
+  }
+  next();
+});
+app.use('/api', (req, res, next) => {
   const previewRole = getPreviewRole(req);
   const readOnlyMethod = ['GET', 'HEAD', 'OPTIONS'].includes(req.method);
   if (!previewRole || readOnlyMethod || req.path === '/auth/preview' || req.path === '/auth/logout') {
@@ -645,13 +670,17 @@ app.post('/api/auth/preview', requireSameOrigin, (req, res) => {
     return res.status(404).json({ error: 'Local role preview is not enabled for this request.' });
   }
   const role = req.body?.role;
-  if (!['supplier', 'medical_shop'].includes(role)) {
-    return res.status(400).json({ error: 'Choose a distributor or retailer preview.' });
+  if (!['admin', 'supplier', 'medical_shop'].includes(role)) {
+    return res.status(400).json({ error: 'Choose an admin, distributor, or retailer preview.' });
   }
   writePreviewCookie(res, role);
   res.json({
     user: {
-      fullName: role === 'supplier' ? 'Local Distributor Preview' : 'Local Retailer Preview',
+      fullName: role === 'supplier'
+        ? 'Local Distributor Preview'
+        : role === 'medical_shop'
+          ? 'Local Retailer Preview'
+          : 'Local Admin Preview',
       role
     },
     previewOnly: true
@@ -2395,12 +2424,22 @@ app.post('/api/admin/kyc/:id/review', requireSameOrigin, asyncRoute(async (req, 
 
 // ---------- static frontend ----------
 
+app.get('/about', (req, res, next) => {
+  res.sendFile(join(WEB_DIR, 'about.html'), (error) => {
+    if (error && !res.headersSent) next(error);
+  });
+});
+
 app.use(express.static(WEB_DIR));
 
-// Fallback: unknown non-API GET paths get the landing page.
+// Fallback: unknown non-API GET paths get the landing page. Guarded because
+// the static bundle may not be traced into the serverless function.
 app.use((req, res, next) => {
   if (req.method === 'GET' && !req.path.startsWith('/api')) {
-    return res.sendFile(join(WEB_DIR, 'index.html'));
+    res.sendFile(join(WEB_DIR, 'index.html'), (error) => {
+      if (error && !res.headersSent) next(error);
+    });
+    return;
   }
   next();
 });
@@ -2419,12 +2458,9 @@ app.use((error, req, res, next) => {
 
 export default app;
 
-// Serverless platforms (Vercel, Netlify, Lambda) import this module as a
-// function and provide their own listener; only bind a port for direct runs
-// like `node server/index.mjs`.
-const invokedAsScript = process.argv[1] &&
-  resolve(process.argv[1]) === fileURLToPath(import.meta.url);
-if (invokedAsScript) {
+// Vercel imports this module as a serverless function (api/index.mjs) and
+// provides its own listener; only bind a port for local/standalone runs.
+if (process.env.VERCEL !== '1') {
   app.listen(PORT, () => {
     console.log(`Connect Pharma HTML app → http://localhost:${PORT}`);
   });

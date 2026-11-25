@@ -6,11 +6,11 @@
   ];
   const HOME_NAV = [
     ['How it works', '/index.html#how-it-works'],
-    ['For businesses', '/index.html#for-businesses'],
     ['About us', '/about.html'],
     ['Contact', '/contact.html'],
     ['Map', '/map.html']
   ];
+  const HOME_NAV_PATHS = new Set(['/', '/index.html', '/about.html', '/contact.html', '/map.html']);
   const ICONS = {
     search: '<circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/>',
     mapPin: '<path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/>',
@@ -43,7 +43,6 @@
     Search: 'search',
     Map: 'mapPin',
     'How it works': 'workflow',
-    'For businesses': 'briefcase',
     'About us': 'info',
     Contact: 'phone',
     Overview: 'dashboard',
@@ -181,23 +180,24 @@
         ? user.role
         : null;
       const roleKey = role || 'anonymous';
-      const isHomePage = location.pathname === '/' || location.pathname === '/index.html';
+      const useHomeNavigation = HOME_NAV_PATHS.has(location.pathname);
+      const navKey = `${roleKey}:${useHomeNavigation ? 'home' : 'page'}`;
+      header.classList.toggle('home-navigation', useHomeNavigation);
       const existingNav = header.querySelector('#primary-navigation');
-      if (existingNav && header.dataset.navRole === roleKey) {
+      if (existingNav && header.dataset.navRole === navKey) {
         existingNav.querySelectorAll('a').forEach((link) => {
           link.classList.toggle('active', isActive(link.getAttribute('href')));
         });
       } else {
         const authenticated = Boolean(role);
-        const navItems = isHomePage
-          ? authenticated
-            ? [['Overview', DASHBOARD_BY_ROLE[role]], ...HOME_NAV]
-            : HOME_NAV
+        const navItems = useHomeNavigation
+          ? HOME_NAV
           : authenticated
             ? [...(role === 'admin' ? [] : [['Home', '/index.html']]), ...NAV_BY_ROLE[role], ...COMMON_NAV]
             : [...COMMON_NAV, ['About us', '/about.html'], ['Contact', '/contact.html']];
         header.className = 'site-header is-ready';
-        header.dataset.navRole = roleKey;
+        header.classList.toggle('home-navigation', useHomeNavigation);
+        header.dataset.navRole = navKey;
         header.innerHTML = `
           <div class="container bar">
             <a class="brand" href="/index.html" aria-label="The Connect Pharma home">
@@ -213,7 +213,7 @@
               ).join('')}
               ${authenticated
                 ? `<button class="sign-out" type="button">${iconMarkup('logOut', 'nav-icon')}<span>Sign out</span></button>`
-                : `<a href="/login.html">${iconMarkup('logIn', 'nav-icon')}<span>Sign in</span></a><a href="/login.html?mode=signup">${iconMarkup('userPlus', 'nav-icon')}<span>Create account</span></a>`}
+                : `<div class="nav-auth-actions"><a href="/login.html?mode=signup">${iconMarkup('userPlus', 'nav-icon')}<span>Create account</span></a><a href="/login.html">${iconMarkup('logIn', 'nav-icon')}<span>Sign in</span></a></div>`}
             </nav>
           </div>`;
         const nav = header.querySelector('#primary-navigation');

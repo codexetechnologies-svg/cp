@@ -12,7 +12,7 @@ test('local role preview allows only supported roles from loopback requests', ()
   const options = { enabled: true, remoteAddress: '127.0.0.1' };
   assert.equal(getLocalPreviewRole({ ...options, role: 'supplier' }), 'supplier');
   assert.equal(getLocalPreviewRole({ ...options, role: 'medical_shop' }), 'medical_shop');
-  assert.equal(getLocalPreviewRole({ ...options, role: 'admin' }), null);
+  assert.equal(getLocalPreviewRole({ ...options, role: 'admin' }), 'admin');
   assert.equal(getLocalPreviewRole({ ...options, remoteAddress: '192.168.1.20', role: 'supplier' }), null);
   assert.equal(getLocalPreviewRole({ ...options, enabled: false, role: 'supplier' }), null);
 });
