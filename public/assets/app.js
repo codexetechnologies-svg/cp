@@ -10,7 +10,7 @@
     ['Contact', '/contact.html'],
     ['Map', '/map.html']
   ];
-  const HOME_NAV_PATHS = new Set(['/', '/index.html', '/about.html', '/contact.html', '/map.html']);
+  const HOME_NAV_PATHS = new Set(['/', '/index.html', '/about.html', '/contact.html', '/map.html', '/demo.html']);
   const ICONS = {
     search: '<circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/>',
     mapPin: '<path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/>',
@@ -471,11 +471,11 @@
         contactStatus.hidden = false;
       });
     }
-    const user = cachedSessionUser();
-    // Render chrome immediately (anonymous nav when no cached role) so the
-    // header is never blank; protectPage re-renders once the session resolves.
+    const publicDemoPage = document.body.dataset.publicDemo === 'true';
+    const user = publicDemoPage ? null : cachedSessionUser();
+    // Public demos render anonymous chrome and never query authentication state.
     renderChrome(user);
-    protectPage(user);
+    if (!publicDemoPage) protectPage(user);
   }
 
   // app.js is loaded at the end of <body>, so the chrome elements are already

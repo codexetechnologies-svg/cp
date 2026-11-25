@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Public demo — Connect Pharma</title>
+  <link rel="stylesheet" href="/assets/app.css" />
+</head>
+<body data-public-demo="true">
+  <div id="site-header"></div>
+  <main class="container page-shell cp-demo-page">
+    <aside class="notice info cp-demo-notice" role="note">
+      Public demo · Sample information only · Read-only. This preview does not use real accounts, business records, or live platform data.
+    </aside>
+
+    <header class="mb-8">
+      <p class="page-eyebrow" id="demo-eyebrow">ConnectPharma demo</p>
+      <h1 class="page-title" id="demo-title">Role dashboard preview</h1>
+      <p class="page-description" id="demo-description">Choose a preview role to see an example dashboard.</p>
+    </header>
+
+    <nav class="cp-demo-role-switcher" aria-label="Choose a demo role">
+      <a class="btn btn-secondary btn-sm" href="/demo.html?role=admin" data-demo-role="admin">Admin</a>
+      <a class="btn btn-secondary btn-sm" href="/demo.html?role=supplier" data-demo-role="supplier">Distributor</a>
+      <a class="btn btn-secondary btn-sm" href="/demo.html?role=medical_shop" data-demo-role="medical_shop">Retailer</a>
+    </nav>
+
+    <p class="notice error mt-6" id="demo-error" role="alert" hidden>
+      This demo role is not recognized. Choose Admin, Distributor, or Retailer above.
+    </p>
+
+    <div id="demo-content" hidden>
+      <section class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3" id="demo-metrics" aria-label="Sample dashboard metrics"></section>
+
+      <div class="mt-8 grid gap-6 lg:grid-cols-2">
+        <section class="card p-6" aria-labelledby="demo-activity-title">
+          <p class="page-eyebrow">Sample activity</p>
+          <h2 class="text-xl font-bold text-brand-navy" id="demo-activity-title"></h2>
+          <ul class="cp-demo-list" id="demo-activity"></ul>
+        </section>
+        <section class="card p-6" aria-labelledby="demo-capabilities-title">
+          <p class="page-eyebrow">Preview only</p>
+          <h2 class="text-xl font-bold text-brand-navy" id="demo-capabilities-title"></h2>
+          <ul class="cp-demo-list" id="demo-capabilities"></ul>
+        </section>
+      </div>
+    </div>
+
+    <p class="mt-8 text-sm text-slate-600">
+      Need a real business account? <a class="font-semibold text-brand-navy" href="/login.html?mode=signup">Create an account</a>
+    </p>
+  </main>
+  <div id="site-footer"></div>
+  <script src="/assets/app.js"></script>
+  <script>
+    (() => {
+      const demos = {
+        admin: {
+          eyebrow: 'Admin portal · Public demo',
+          title: 'Platform overview',
+          description: 'A sample view of administrative metrics. No real accounts, identity documents, or payment records are shown.',
+          activityTitle: 'Sample platform activity',
+          activities: [
+            'Retail pharmacy application · Madurai · Awaiting sample review',
+            'Distributor catalogue updated · Coimbatore · Sample event',
+            'New marketplace listing · Chennai · Sample event'
+          ],
+          capabilitiesTitle: 'Admin tools in the product',
+          capabilities: [
+            'Account review and approval workflows',
+            'Catalogue and subscription oversight',
+            'Audit and platform reporting'
+          ],
+          metrics: [
+            ['Pending approvals', '8', 'Illustrative count'],
+            ['Approved distributors', '84', 'Illustrative count'],
+            ['Retail pharmacies', '326', 'Illustrative count'],
+            ['Catalogue listings', '1,240', 'Illustrative count'],
+            ['Open enquiries', '37', 'Illustrative count'],
+            ['Monthly revenue', 'Sample', 'No financial data']
+          ]
+        },
+        supplier: {
+          eyebrow: 'Distributor portal · Public demo',
+          title: 'Distributor dashboard',
+          description: 'An example distributor view with fictional catalogue and enquiry figures.',
+          activityTitle: 'Sample distributor activity',
+          activities: [
+            'Retailer enquiry · Paracetamol 650 · Sample',
+            'Catalogue listing updated · Amoxicillin 500 · Sample',
+            'Subscription status · Growth plan · Sample'
+          ],
+          capabilitiesTitle: 'Distributor workflows',
+          capabilities: [
+            'Maintain a digital product catalogue',
+            'Review incoming retailer enquiries',
+            'View plan and account information'
+          ],
+          metrics: [
+            ['Active medicine listings', '128', 'Illustrative count'],
+            ['New enquiries', '6', 'Illustrative count'],
+            ['Total enquiries', '24', 'Illustrative count'],
+            ['Subscription plan', 'Growth', 'Sample status']
+          ]
+        },
+        medical_shop: {
+          eyebrow: 'Retailer portal · Public demo',
+          title: 'Retailer dashboard',
+          description: 'An example retailer view with fictional sourcing and enquiry figures.',
+          activityTitle: 'Sample retailer activity',
+          activities: [
+            'Supplier comparison · Telmisartan 40 · Sample',
+            'Enquiry status · Awaiting supplier response · Sample',
+            'Account documents · Manual review status · Sample'
+          ],
+          capabilitiesTitle: 'Retailer workflows',
+          capabilities: [
+            'Search and compare supplier listings',
+            'Send business enquiries to distributors',
+            'Review account and document status'
+          ],
+          metrics: [
+            ['Supplier listings to compare', '12', 'Illustrative count'],
+            ['Open enquiries', '3', 'Illustrative count'],
+            ['Saved comparisons', '5', 'Illustrative count'],
+            ['Account status', 'Demo', 'No account connected']
+          ]
+        }
+      };
+
+      const role = new URLSearchParams(location.search).get('role');
+      const demo = Object.prototype.hasOwnProperty.call(demos, role) ? demos[role] : null;
+      const content = document.getElementById('demo-content');
+      const error = document.getElementById('demo-error');
+
+      if (!demo) {
+        error.hidden = false;
+        return;
+      }
+
+      document.title = `${demo.title} demo — Connect Pharma`;
+      document.getElementById('demo-eyebrow').textContent = demo.eyebrow;
+      document.getElementById('demo-title').textContent = demo.title;
+      document.getElementById('demo-description').textContent = demo.description;
+      document.getElementById('demo-activity-title').textContent = demo.activityTitle;
+      document.getElementById('demo-capabilities-title').textContent = demo.capabilitiesTitle;
+
+      const metrics = document.getElementById('demo-metrics');
+      demo.metrics.forEach(([label, value, note]) => {
+        const card = document.createElement('article');
+        card.className = 'card p-5 cp-demo-metric';
+        const title = document.createElement('p');
+        title.className = 'text-sm text-slate-600';
+        title.textContent = label;
+        const metric = document.createElement('p');
+        metric.className = 'cp-demo-metric-value';
+        metric.textContent = value;
+        const detail = document.createElement('p');
+        detail.className = 'mt-1 text-xs text-slate-500';
+        detail.textContent = note;
+        card.append(title, metric, detail);
+        metrics.append(card);
+      });
+
+      [
+        ['demo-activity', demo.activities],
+        ['demo-capabilities', demo.capabilities]
+      ].forEach(([listId, items]) => {
+        const list = document.getElementById(listId);
+        items.forEach((text) => {
+          const item = document.createElement('li');
+          item.textContent = text;
+          list.append(item);
+        });
+      });
+
+      document.querySelectorAll('[data-demo-role]').forEach((link) => {
+        if (link.dataset.demoRole === role) link.setAttribute('aria-current', 'page');
+      });
+      content.hidden = false;
+    })();
+  </script>
+</body>
+</html>

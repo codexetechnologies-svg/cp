@@ -34,6 +34,16 @@
           <p class="notice error hidden mt-3" id="local-preview-error" role="alert"></p>
         </section>
 
+        <section class="card mt-5 p-4" id="public-demo-panel" aria-label="Public demo previews" hidden>
+          <p class="page-eyebrow">Public demos</p>
+          <p class="mt-1 text-sm text-slate-600">Explore sample dashboards. These previews are read-only and do not access live accounts or data.</p>
+          <div class="mt-4 flex flex-wrap gap-2">
+            <a class="btn btn-secondary btn-sm" href="/demo.html?role=admin">Preview admin</a>
+            <a class="btn btn-secondary btn-sm" href="/demo.html?role=supplier">Preview distributor</a>
+            <a class="btn btn-secondary btn-sm" href="/demo.html?role=medical_shop">Preview retailer</a>
+          </div>
+        </section>
+
         <section class="auth-view" id="login-view">
           <form id="login-form" class="auth-form">
             <label for="email">Email address
@@ -176,8 +186,11 @@
     let recoveryAccessToken = '';
     const previewPanel = document.getElementById('local-preview-panel');
     const previewError = document.getElementById('local-preview-error');
+    const publicDemoPanel = document.getElementById('public-demo-panel');
+    const isLoopbackHost = ['localhost', '127.0.0.1', '::1', '[::1]'].includes(location.hostname.toLowerCase());
     const query = new URLSearchParams(location.search);
     const returnTo = query.get('returnTo');
+    publicDemoPanel.hidden = isLoopbackHost;
 
     if (returnTo) {
       loginTab.href = `/login.html?returnTo=${encodeURIComponent(returnTo)}`;
@@ -234,7 +247,9 @@
         const response = await fetch('/api/config', { credentials: 'same-origin' });
         if (!response.ok) throw new Error(`Preview availability check failed (${response.status}).`);
         const config = await response.json();
-        previewPanel.hidden = config.localRolePreview !== true;
+        const localPreviewAvailable = config.localRolePreview === true;
+        previewPanel.hidden = !localPreviewAvailable;
+        if (localPreviewAvailable) publicDemoPanel.hidden = true;
       } catch (error) {
         console.warn('Could not check local preview availability:', error);
       }

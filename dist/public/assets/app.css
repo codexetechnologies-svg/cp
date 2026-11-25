@@ -1579,3 +1579,16 @@ table.data-table tbody tr:hover { background: #f8fafc; }
 }
 .step-card h3 { font-size: 1rem; font-weight: 700; color: var(--navy); margin: .75rem 0 .5rem; }
 .step-card p { font-size: .875rem; color: var(--muted); margin: 0; line-height: 1.5rem; }
+
+.cp-demo-page { padding-bottom: 4rem; }
+.cp-demo-notice { margin-bottom: 2rem; }
+.cp-demo-role-switcher { display: flex; flex-wrap: wrap; gap: .5rem; }
+.cp-demo-role-switcher a[aria-current="page"] {
+  border-color: rgba(13, 148, 136, .35);
+  background: #e6f4f2;
+  color: #0f766e;
+}
+.cp-demo-metric { min-height: 8rem; }
+.cp-demo-metric-value { margin-top: .5rem; color: var(--navy); font-size: clamp(1.7rem, 3vw, 2.25rem); font-weight: 800; letter-spacing: -.03em; }
+.cp-demo-list { display: grid; gap: .75rem; margin: 1rem 0 0; padding: 0; list-style: none; }
+.cp-demo-list li { border: 1px solid var(--border); border-radius: .75rem; padding: .875rem 1rem; color: var(--muted); font-size: .875rem; line-height: 1.5rem; }
