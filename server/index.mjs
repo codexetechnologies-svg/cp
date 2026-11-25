@@ -566,8 +566,14 @@ function requireAccount(...roles) {
       req.account = {
         id: previewRole === 'supplier'
           ? '00000000-0000-4000-8000-000000000001'
-          : '00000000-0000-4000-8000-000000000002',
-        fullName: previewRole === 'supplier' ? 'Local Distributor Preview' : 'Local Retailer Preview',
+          : previewRole === 'medical_shop'
+            ? '00000000-0000-4000-8000-000000000002'
+            : '00000000-0000-4000-8000-000000000003',
+        fullName: previewRole === 'supplier'
+          ? 'Local Distributor Preview'
+          : previewRole === 'medical_shop'
+            ? 'Local Retailer Preview'
+            : 'Local Admin Preview',
         email: 'preview@localhost',
         role: previewRole,
         status: 'approved'
@@ -664,13 +670,17 @@ app.post('/api/auth/preview', requireSameOrigin, (req, res) => {
     return res.status(404).json({ error: 'Local role preview is not enabled for this request.' });
   }
   const role = req.body?.role;
-  if (!['supplier', 'medical_shop'].includes(role)) {
-    return res.status(400).json({ error: 'Choose a distributor or retailer preview.' });
+  if (!['admin', 'supplier', 'medical_shop'].includes(role)) {
+    return res.status(400).json({ error: 'Choose an admin, distributor, or retailer preview.' });
   }
   writePreviewCookie(res, role);
   res.json({
     user: {
-      fullName: role === 'supplier' ? 'Local Distributor Preview' : 'Local Retailer Preview',
+      fullName: role === 'supplier'
+        ? 'Local Distributor Preview'
+        : role === 'medical_shop'
+          ? 'Local Retailer Preview'
+          : 'Local Admin Preview',
       role
     },
     previewOnly: true
@@ -2413,6 +2423,12 @@ app.post('/api/admin/kyc/:id/review', requireSameOrigin, asyncRoute(async (req, 
 }));
 
 // ---------- static frontend ----------
+
+app.get('/about', (req, res, next) => {
+  res.sendFile(join(WEB_DIR, 'about.html'), (error) => {
+    if (error && !res.headersSent) next(error);
+  });
+});
 
 app.use(express.static(WEB_DIR));
 

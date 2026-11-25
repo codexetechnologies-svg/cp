@@ -6,59 +6,271 @@
 <title>The Connect Pharma — Connecting Pharmaceutical Businesses</title>
 <link rel="stylesheet" href="/assets/app.css" />
 </head>
-<body>
+<body class="page-home">
 <div id="site-header"></div>
 
 <main>
-  <section class="hero-landing">
-    <div class="orb orb-one"></div>
-    <div class="orb orb-two"></div>
-    <div class="hero-copy">
-      <span class="pill"><span class="dot"></span>THE CONNECT PHARMA <span aria-hidden="true">•</span> B2B PHARMA NETWORK</span>
-      <h1>Connecting the Entire Pharmaceutical Business Ecosystem Through One Platform.</h1>
-      <p class="sub"><strong>Our Vision:</strong> <em>To become a trusted digital business network for the pharmaceutical industry.</em> Explore wholesale offers, connect directly with suppliers and medical shops, and grow together through more transparent business relationships.</p>
-      <div class="cta-row">
-        <a class="btn btn-success" href="/search.html">Explore Medicine Search</a>
-        <a class="btn btn-ghost-light" href="/login.html?mode=signup">Register Your Business</a>
-      </div>
-      <div class="hero-trust-bar" aria-label="Business network commitments">
-        <span>B2B pharmaceutical businesses</span>
-        <span>Drug Licence &amp; GST document review</span>
-        <span>Regulated-medicine responsibilities</span>
-      </div>
-      <p class="hero-trust-note">Portal access after email verification is not a licence, GST or regulatory verification.</p>
-    </div>
-    <div>
-      <div class="card pad shadow-soft">
-        <p class="page-eyebrow">Example comparison</p>
-        <h3 class="text-xl font-bold text-slate-900">Paracetamol 650 mg Tablet</h3>
-        <p class="text-sm text-slate-500 mt-1">3 illustrative supplier offers</p>
-        <div class="mt-4 space-y-3">
-          <div class="flex justify-between items-center border rounded-xl px-4 py-3">
-            <div><div class="font-semibold text-slate-900">Astra Pharma</div><div class="text-xs text-slate-500">Chennai · 12 km</div></div>
-            <div class="text-right"><div class="font-mono font-semibold text-brand-navy">₹18.40</div><div class="text-xs text-emerald-700 font-semibold">In Stock</div></div>
+  <section class="hero-landing cp-hero" aria-labelledby="cp-hero-title">
+    <div class="cp-hero-shell">
+      <div class="cp-hero-layout">
+        <div class="cp-hero-copy">
+          <p class="cp-hero-trust-pill">
+            <span class="cp-hero-live-dot" aria-hidden="true"></span>
+            <span>Tamil Nadu B2B Pharma Exchange <span aria-hidden="true">•</span> Form 20B/21B &amp; GSTIN verified</span>
+          </p>
+          <h1 class="cp-hero-title" id="cp-hero-title">Tamil Nadu’s B2B Pharmaceutical Marketplace for Licensed Pharmacies &amp; Stockists</h1>
+          <p class="cp-hero-subtitle">Compare live PTR, PTS, bonus schemes, and batch expiry across verified Tamil Nadu wholesale distributors—backed by 100% TN Drugs Control compliance on every indent.</p>
+
+          <form class="cp-hero-command" action="/search.html" method="get" role="search">
+            <label class="cp-hero-visually-hidden" for="cp-hero-query">Search molecule, brand, or composition</label>
+            <div class="cp-hero-search-field">
+              <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><circle cx="10.8" cy="10.8" r="6.8"></circle><path d="m16 16 4.5 4.5"></path></svg>
+              <input id="cp-hero-query" name="q" type="search" autocomplete="off" placeholder="Search molecule, brand, or composition (e.g., Telmisartan 40, Dolo 650)..." />
+            </div>
+            <div class="cp-hero-district-field">
+              <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z"></path><circle cx="12" cy="10" r="2.5"></circle></svg>
+              <label class="cp-hero-visually-hidden" for="cp-hero-district">Choose a Tamil Nadu district</label>
+              <select id="cp-hero-district" name="district">
+                <option value="">All 38 TN Districts</option>
+                <option>Chennai</option>
+                <option>Madurai</option>
+                <option>Coimbatore</option>
+                <option>Trichy</option>
+                <option>Salem</option>
+                <option>Tirunelveli</option>
+                <option>Erode</option>
+                <option>Vellore</option>
+              </select>
+              <svg class="cp-hero-select-chevron" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="m7 10 5 5 5-5"></path></svg>
+            </div>
+            <button class="cp-hero-search-submit" type="submit">Search Live Rates</button>
+          </form>
+
+          <div class="cp-hero-quick-search" aria-label="Popular medicine searches">
+            <span class="cp-hero-quick-label">Popular searches</span>
+            <div class="cp-hero-molecule-list">
+              <button type="button" class="cp-hero-molecule" data-molecule="paracetamol650" aria-pressed="false">Paracetamol 650</button>
+              <button type="button" class="cp-hero-molecule" data-molecule="metforminSR" aria-pressed="false">Metformin SR</button>
+              <button type="button" class="cp-hero-molecule" data-molecule="telmisartan40" aria-pressed="true">Telmisartan 40</button>
+              <button type="button" class="cp-hero-molecule" data-molecule="atorvastatin10" aria-pressed="false">Atorvastatin 10</button>
+              <button type="button" class="cp-hero-molecule" data-molecule="pantoprazole" aria-pressed="false">Pantoprazole</button>
+            </div>
           </div>
-          <div class="flex justify-between items-center border rounded-xl px-4 py-3">
-            <div><div class="font-semibold text-slate-900">Bharat Labs</div><div class="text-xs text-slate-500">Madurai · 4 km</div></div>
-            <div class="text-right"><div class="font-mono font-semibold text-brand-navy">₹19.10</div><div class="text-xs text-emerald-700 font-semibold">In Stock</div></div>
+
+          <div class="cp-hero-actions">
+            <a class="cp-hero-action-primary" href="/search.html">
+              Explore TN Wholesale Catalogue
+              <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M4 12h15m-6-6 6 6-6 6"></path></svg>
+            </a>
+            <a class="cp-hero-action-secondary" href="/login.html?mode=signup">Verify Drug Licence &amp; Join <span aria-hidden="true">→</span></a>
           </div>
-          <div class="flex justify-between items-center border rounded-xl px-4 py-3">
-            <div><div class="font-semibold text-slate-900">Cureline Distributors</div><div class="text-xs text-slate-500">Tirunelveli · 31 km</div></div>
-            <div class="text-right"><div class="font-mono font-semibold text-brand-navy">₹20.75</div><div class="text-xs text-amber-600 font-semibold">Low Stock</div></div>
+
+          <div class="cp-hero-coverage" aria-label="Compliance and coverage">
+            <div class="cp-hero-coverage-item">
+              <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M12 3 19 6v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6l7-3Z"></path><path d="m9 12 2 2 4-4"></path></svg>
+              <span>TN Drugs Control Verified</span>
+            </div>
+            <div class="cp-hero-coverage-item">
+              <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M3 7h12v11H3zM15 11h4l3 3v4h-7"></path><circle cx="7.5" cy="18" r="1.5"></circle><circle cx="18" cy="18" r="1.5"></circle></svg>
+              <span>38 Districts Intra-State Dispatch</span>
+            </div>
+            <div class="cp-hero-coverage-item">
+              <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M12 3v18M5 7h14M5 17h14"></path><path d="m8 7-3 5 3 5m8-10 3 5-3 5"></path></svg>
+              <span>Batch &amp; Cold-Chain Transparent</span>
+            </div>
           </div>
         </div>
+
+        <div class="cp-hero-terminal-wrap">
+          <div class="cp-hero-terminal-shadow" aria-hidden="true"></div>
+          <article class="cp-hero-terminal" aria-label="Tamil Nadu wholesale rate comparison preview">
+            <header class="cp-hero-terminal-topbar">
+              <div class="cp-hero-feed-label"><span class="cp-hero-feed-dot" aria-hidden="true"></span>Live wholesale feed <span aria-hidden="true">•</span> Tamil Nadu</div>
+              <span class="cp-hero-stockist-status"><span aria-hidden="true"></span>14 Verified Stockists Online</span>
+            </header>
+
+            <div class="cp-hero-product">
+              <div class="cp-hero-product-copy">
+                <p class="cp-hero-section-label">Rate comparison <span>·</span> Sample preview</p>
+                <h2 class="cp-hero-product-title" data-product-title>Telmisartan 40mg Tablets</h2>
+                <p class="cp-hero-product-detail" data-product-detail>15 Tabs / Strip <span aria-hidden="true">•</span> Anti-Hypertensive</p>
+              </div>
+              <div class="cp-hero-product-badges">
+                <span>MRP <strong data-product-mrp>₹218.00</strong></span>
+                <span data-product-gst>GST 12%</span>
+                <span data-product-schedule>Schedule H</span>
+              </div>
+            </div>
+
+            <div class="cp-hero-offers" aria-label="Sample stockist offers">
+              <button type="button" class="cp-hero-offer-row is-selected" data-offer-row aria-pressed="true">
+                <span class="cp-hero-offer-main">
+                  <span class="cp-hero-offer-heading">
+                    <span class="cp-hero-best-badge" data-best-badge>Best net rate</span>
+                    <span class="cp-hero-offer-name" data-offer-name>Madurai Pharma Distributors</span>
+                  </span>
+                  <span class="cp-hero-offer-location" data-offer-location>Madurai <span aria-hidden="true">•</span> Form 20B/21B verified</span>
+                  <span class="cp-hero-offer-metrics">
+                    <span data-offer-pts>PTS ₹142.50</span><span data-offer-scheme>Scheme: 10+2</span><span data-offer-expiry>Exp: 08/2028</span>
+                  </span>
+                </span>
+                <span class="cp-hero-offer-price"><strong data-offer-net>₹118.75</strong><span>/ strip net</span></span>
+              </button>
+              <button type="button" class="cp-hero-offer-row" data-offer-row aria-pressed="false">
+                <span class="cp-hero-offer-main">
+                  <span class="cp-hero-offer-heading">
+                    <span class="cp-hero-best-badge" data-best-badge hidden></span>
+                    <span class="cp-hero-offer-name" data-offer-name>Sri Balaji Medical Agencies</span>
+                  </span>
+                  <span class="cp-hero-offer-location" data-offer-location>Chennai <span aria-hidden="true">•</span> Form 20B/21B verified</span>
+                  <span class="cp-hero-offer-metrics">
+                    <span data-offer-pts>PTS ₹144.00</span><span data-offer-scheme>Scheme: 10+1</span><span data-offer-expiry>Exp: 11/2028</span>
+                  </span>
+                </span>
+                <span class="cp-hero-offer-price"><strong data-offer-net>₹130.90</strong><span>/ strip net</span></span>
+              </button>
+              <button type="button" class="cp-hero-offer-row" data-offer-row aria-pressed="false">
+                <span class="cp-hero-offer-main">
+                  <span class="cp-hero-offer-heading">
+                    <span class="cp-hero-best-badge" data-best-badge hidden></span>
+                    <span class="cp-hero-offer-name" data-offer-name>Kongu Healthcare Corp</span>
+                  </span>
+                  <span class="cp-hero-offer-location" data-offer-location>Coimbatore <span aria-hidden="true">•</span> Form 20B/21B verified</span>
+                  <span class="cp-hero-offer-metrics">
+                    <span data-offer-pts>PTS ₹145.00</span><span data-offer-scheme>Scheme: Net Rate</span><span data-offer-expiry>Exp: 06/2028</span>
+                  </span>
+                </span>
+                <span class="cp-hero-offer-price"><strong data-offer-net>₹145.00</strong><span>/ strip net</span></span>
+              </button>
+            </div>
+
+            <footer class="cp-hero-terminal-footer">
+              <span>Savings vs MRP: <strong data-product-savings>45.5%</strong> <span aria-hidden="true">•</span> GST E-Invoice Ready</span>
+              <a href="/search.html">Compare All Suppliers <span aria-hidden="true">→</span></a>
+            </footer>
+          </article>
+          <p class="cp-hero-preview-note">Illustrative sample rates and stockist details. Confirm current price, availability, and compliance before ordering.</p>
+        </div>
       </div>
-      <p class="muted-note">Illustrative comparison preview; listings may use sample data.</p>
     </div>
   </section>
 
-  <section class="hero-pillars-section container" aria-label="Compare, connect and grow">
-    <div class="hero-pillars">
-      <div><strong>COMPARE</strong><span>Compare products and net prices.</span></div>
-      <div><strong>CONNECT</strong><span>Link verified suppliers and medical shops.</span></div>
-      <div><strong>GROW</strong><span>Scale margins and business opportunities.</span></div>
-    </div>
-  </section>
+  <script>
+    (() => {
+      const hero = document.querySelector('.cp-hero');
+      if (!hero) return;
+
+      const products = {
+        paracetamol650: {
+          title: 'Paracetamol 650mg Tablets',
+          detail: '15 Tabs / Strip • Analgesic & Antipyretic',
+          mrp: '₹28.00',
+          savings: '62.8%',
+          offers: [
+            { pts: '₹12.50', scheme: 'Scheme: 10+2', expiry: 'Exp: 09/2028', net: '₹10.42' },
+            { pts: '₹12.80', scheme: 'Scheme: 10+1', expiry: 'Exp: 12/2028', net: '₹11.64' },
+            { pts: '₹13.50', scheme: 'Scheme: Net Rate', expiry: 'Exp: 07/2028', net: '₹13.50' }
+          ]
+        },
+        metforminSR: {
+          title: 'Metformin SR Tablets',
+          detail: '10 Tabs / Strip • Antidiabetic',
+          mrp: '₹95.00',
+          savings: '52.6%',
+          offers: [
+            { pts: '₹54.00', scheme: 'Scheme: 10+2', expiry: 'Exp: 10/2028', net: '₹45.00' },
+            { pts: '₹56.00', scheme: 'Scheme: 10+1', expiry: 'Exp: 03/2029', net: '₹50.91' },
+            { pts: '₹57.00', scheme: 'Scheme: Net Rate', expiry: 'Exp: 08/2028', net: '₹57.00' }
+          ]
+        },
+        telmisartan40: {
+          title: 'Telmisartan 40mg Tablets',
+          detail: '15 Tabs / Strip • Anti-Hypertensive',
+          mrp: '₹218.00',
+          savings: '45.5%',
+          offers: [
+            { pts: '₹142.50', scheme: 'Scheme: 10+2', expiry: 'Exp: 08/2028', net: '₹118.75' },
+            { pts: '₹144.00', scheme: 'Scheme: 10+1', expiry: 'Exp: 11/2028', net: '₹130.90' },
+            { pts: '₹145.00', scheme: 'Scheme: Net Rate', expiry: 'Exp: 06/2028', net: '₹145.00' }
+          ]
+        },
+        atorvastatin10: {
+          title: 'Atorvastatin 10mg Tablets',
+          detail: '10 Tabs / Strip • Lipid-Lowering',
+          mrp: '₹82.00',
+          savings: '58.3%',
+          offers: [
+            { pts: '₹41.00', scheme: 'Scheme: 10+2', expiry: 'Exp: 05/2028', net: '₹34.17' },
+            { pts: '₹43.00', scheme: 'Scheme: 10+1', expiry: 'Exp: 01/2029', net: '₹39.09' },
+            { pts: '₹42.50', scheme: 'Scheme: Net Rate', expiry: 'Exp: 09/2028', net: '₹42.50' }
+          ]
+        },
+        pantoprazole: {
+          title: 'Pantoprazole 40mg Tablets',
+          detail: '15 Tabs / Strip • Proton Pump Inhibitor',
+          mrp: '₹105.00',
+          savings: '47.6%',
+          offers: [
+            { pts: '₹66.00', scheme: 'Scheme: 10+2', expiry: 'Exp: 04/2028', net: '₹55.00' },
+            { pts: '₹68.00', scheme: 'Scheme: 10+1', expiry: 'Exp: 10/2028', net: '₹61.82' },
+            { pts: '₹70.00', scheme: 'Scheme: Net Rate', expiry: 'Exp: 02/2029', net: '₹70.00' }
+          ]
+        }
+      };
+
+      const query = hero.querySelector('#cp-hero-query');
+      const terminal = hero.querySelector('.cp-hero-terminal');
+      const moleculeButtons = hero.querySelectorAll('[data-molecule]');
+      const offerRows = hero.querySelectorAll('[data-offer-row]');
+      let updateTimer;
+
+      function selectOffer(row) {
+        offerRows.forEach((item) => {
+          const selected = item === row;
+          item.classList.toggle('is-selected', selected);
+          item.setAttribute('aria-pressed', String(selected));
+        });
+      }
+
+      function showProduct(key) {
+        const product = products[key];
+        if (!product) return;
+
+        terminal.classList.add('is-updating');
+        window.clearTimeout(updateTimer);
+        updateTimer = window.setTimeout(() => terminal.classList.remove('is-updating'), 180);
+
+        hero.querySelector('[data-product-title]').textContent = product.title;
+        hero.querySelector('[data-product-detail]').innerHTML =
+          `${product.detail.split(' • ')[0]} <span aria-hidden="true">•</span> ${product.detail.split(' • ')[1]}`;
+        hero.querySelector('[data-product-mrp]').textContent = product.mrp;
+        hero.querySelector('[data-product-savings]').textContent = product.savings;
+
+        product.offers.forEach((offer, index) => {
+          const row = offerRows[index];
+          row.querySelector('[data-offer-pts]').textContent = `PTS ${offer.pts}`;
+          row.querySelector('[data-offer-scheme]').textContent = offer.scheme;
+          row.querySelector('[data-offer-expiry]').textContent = offer.expiry;
+          row.querySelector('[data-offer-net]').textContent = offer.net;
+          row.querySelector('[data-best-badge]').hidden = index !== 0;
+          if (index === 0) selectOffer(row);
+        });
+      }
+
+      moleculeButtons.forEach((button) => {
+        button.addEventListener('click', () => {
+          const key = button.dataset.molecule;
+          query.value = button.textContent.trim();
+          moleculeButtons.forEach((item) => {
+            item.setAttribute('aria-pressed', String(item === button));
+          });
+          showProduct(key);
+        });
+      });
+
+      offerRows.forEach((row) => row.addEventListener('click', () => selectOffer(row)));
+    })();
+  </script>
 
   <section class="brand-story-section container" aria-labelledby="brand-story-title">
     <div class="brand-story-heading">
@@ -66,36 +278,41 @@
       <h2 id="brand-story-title">Our Vision, Mission &amp; Brand Story</h2>
       <p>The Connect Pharma is more than just a name. It represents a vision to connect the entire pharmaceutical business ecosystem through one unified digital platform.</p>
     </div>
-    <div class="brand-principles">
-      <article class="brand-principle-card">
-        <span class="brand-principle-label">Our Vision</span>
-        <p>To become a trusted digital business network for the pharmaceutical industry.</p>
-      </article>
-      <article class="brand-principle-card">
-        <span class="brand-principle-label">Our Mission</span>
-        <p>To simplify pharmaceutical business connections through technology, transparency and trust.</p>
-      </article>
-      <article class="brand-principle-card brand-values-card">
-        <span class="brand-principle-label">Our Core Values</span>
-        <ul class="brand-values" aria-label="Trust, transparency, connectivity, growth and reliability">
-          <li>Trust</li><li>Transparency</li><li>Connectivity</li><li>Growth</li><li>Reliability</li>
-        </ul>
-      </article>
-    </div>
-
-    <div class="brand-tagline-model" aria-labelledby="brand-tagline-title">
-      <div>
-        <p class="page-eyebrow">Our complete business model</p>
-        <h3 id="brand-tagline-title">COMPARE <span>•</span> CONNECT <span>•</span> GROW</h3>
+    <div class="hero-pillars-section" aria-label="Compare, connect and grow">
+      <div class="hero-pillars">
+        <div>
+          <strong>COMPARE</strong>
+          <span>Compare products and net prices.</span>
+          <ul>
+            <li>Review PTR, PTS, and net rates</li>
+            <li>Compare schemes and GST</li>
+            <li>Check pack size and expiry</li>
+          </ul>
+        </div>
+        <div>
+          <strong>CONNECT</strong>
+          <span>Link verified suppliers and medical shops.</span>
+          <ul>
+            <li>Find Tamil Nadu wholesalers</li>
+            <li>Send direct stock enquiries</li>
+            <li>Explore district coverage</li>
+          </ul>
+        </div>
+        <div>
+          <strong>GROW</strong>
+          <span>Scale margins and business opportunities.</span>
+          <ul>
+            <li>Discover bulk-rate opportunities</li>
+            <li>Source across 38 districts</li>
+            <li>Build reliable supply links</li>
+          </ul>
+        </div>
       </div>
-      <p><strong>COMPARE</strong><span>Compare products and prices.</span></p>
-      <p><strong>CONNECT</strong><span>Connect pharmaceutical buyers and suppliers.</span></p>
-      <p><strong>GROW</strong><span>Grow together through better business opportunities.</span></p>
     </div>
-
   </section>
 
-  <section class="container">
+  <section class="container highlight-section" aria-labelledby="marketplace-features-title">
+    <h2 class="highlight-section-title" id="marketplace-features-title">Everything You Need to Source with Confidence</h2>
     <div class="highlight-grid">
       <article class="highlight-card">
         <span class="icon"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-4-4"></path></svg></span>
